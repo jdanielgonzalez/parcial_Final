@@ -4,6 +4,7 @@
 #include <QTimer>
 #include "cuerpo.h"
 #include <QList>
+#include "rectangulo.h"
 
 #include <QMainWindow>
 
@@ -22,14 +23,17 @@ private slots:
     void on_simular_clicked();
     void crear();
     void mover();
+    void crear_rectangulo();
 
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *escena;
     QTimer * timer;
+    QTimer * timerectangulo;
     QTimer * timermover;
     cuerpo *pajaro;
     QList<cuerpo*> pajaros;
+    QList<rectangulo*> rectangulos;
 
 
 };

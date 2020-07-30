@@ -31,6 +31,7 @@ void cuerpo::actualizaposicion()
     posx=posx+velx*delta;
     posy=posy+vely*delta-(0.5*g*delta*delta);
     setPos(posx,-posy);
+
 }
 
 void cuerpo::actualizarvelocidad()
@@ -41,13 +42,17 @@ void cuerpo::actualizarvelocidad()
     vel=sqrt(velx*velx+vely*vely);
 }
 
+void cuerpo::rebote()
+{
+    vel=-vel;
+}
 
 cuerpo::cuerpo(double x, double y, double v, double a)
 {
-    r=5;
+    r=15;
     posx = x;
     posy =y;
     vel=v;
     ang=a;
-    setPos(posx,-posy);
+    setPos(posx,posy);
 }

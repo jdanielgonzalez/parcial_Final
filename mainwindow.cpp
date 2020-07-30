@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -8,14 +9,16 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     escena = new QGraphicsScene;
+    escena->setSceneRect(0,0,600,600); //darle un tamaño a la escena
+
     timer = new QTimer;
     timermover = new QTimer;
+    timerectangulo = new QTimer;
 
     ui->graphicsView->setScene(escena);
-    escena->setSceneRect(0,-398,390,390);
-    escena->addRect(escena->sceneRect());
     connect(timer,SIGNAL(timeout()),this,SLOT(crear()));
-    connect(timer,SIGNAL(timeout()),this,SLOT(crear()));
+    connect(timerectangulo,SIGNAL(timeout()),this,SLOT(crear_rectangulo()));
+    connect(timermover,SIGNAL(timeout()),this,SLOT(mover()));
 
 }
 
@@ -27,19 +30,18 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_simular_clicked()
 {
-    timer->start(20);
+    timer->start(2000);
+    timerectangulo->start(4000);
+    timermover->start(20);
 }
 
 void MainWindow::crear()
 {
-    int x = rand() % 1000;
-    double y,v,a;
-    y=500;
-    v=20;
-    a=0;
+    int x = rand() % 600;
+    int v =rand() % 30;
+    int a = rand() % 45;
     double rad=(a/180)*3.1416;
-    //pajaro = new cuerpo(x,y,v,rad);
-    pajaros.push_back(new cuerpo(x,y,v,rad));
+    pajaros.push_back(new cuerpo(x,0,v,rad));
     escena->addItem(pajaros.back());
 }
 
@@ -47,7 +49,27 @@ void MainWindow::mover()
 {
     for(QList<cuerpo*>::iterator it= pajaros.begin(); it!=pajaros.end();it++)
     {
+        if((*it)->getPosy()<-600)
+        {
+            (*it)->hide();
+        }
+        if((*it)->getPosx()<0)
+        {
+            (*it)->rebote();
+        }
+        if((*it)->getPosx()>600)
+        {
+            (*it)->rebote();
+        }
         (*it)->actualizarvelocidad();
         (*it)->actualizaposicion();
     }
+}
+
+void MainWindow::crear_rectangulo()
+{
+    int x = rand() % 600;
+    int y =rand() % 300;
+    rectangulos.push_back(new rectangulo(x,y));
+    escena->addItem(rectangulos.back());
 }

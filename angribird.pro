@@ -18,11 +18,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     cuerpo.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    rectangulo.cpp
 
 HEADERS += \
     cuerpo.h \
-    mainwindow.h
+    mainwindow.h \
+    rectangulo.h
 
 FORMS += \
     mainwindow.ui

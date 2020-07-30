@@ -20,6 +20,7 @@ public:
     double getPosx();
     void actualizaposicion();
     void actualizarvelocidad();
+    void rebote();
 
 };
 
