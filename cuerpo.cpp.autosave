@@ -1,0 +1,44 @@
+#include "cuerpo.h"
+#include <QTimer>
+#include <stdlib.h>
+
+cuerpo::cuerpo(QGraphicsItem *parent): QObject(), QGraphicsPixmapItem()
+{
+    //set random posicion
+    int random_number = rand() % 700;
+    setPos(random_number,0);
+
+    //draw the bullet
+    setPixmap(QPixmap(":/images/enemy.png"));
+
+    //connect
+    QTimer * timer = new QTimer();
+    connect(timer,SIGNAL(timeout()),this, SLOT(move()));
+
+    timer->start(50);
+}
+
+void cuerpo::setPosx(double x)
+{
+    posx=x;
+    setPosx(posx);
+}
+
+QRectF cuerpo::boundingRect() const
+{
+    return QRectF(-radio/2,-radio/2,2*radio,2*radio); //retornar un rectangulo
+}
+
+void cuerpo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    painter->drawEllipse(boundingRect()); //dibujar un rectangulo
+}
+
+void cuerpo::move()
+{
+    setPos(x(),y()+5);
+    if(pos().y() > 500)
+    {
+        delete this;
+    }
+}
