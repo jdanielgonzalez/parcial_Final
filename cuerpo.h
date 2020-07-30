@@ -1,22 +1,26 @@
 #ifndef CUERPO_H
 #define CUERPO_H
-#include <QGraphicsPixmapItem>
-#include <QObject>
+#include <math.h>
+#include <QGraphicsItem>
 #include <QPainter>
 
-class cuerpo:public QObject, public QGraphicsPixmapItem
+class cuerpo: public QGraphicsItem
 {
-    Q_OBJECT
-    double radio;
+    double g=9.8;
+    double delta=0.1;
+    double posy,posx,ang,vel,velx,vely;
+    int r;
+
 public:
-    cuerpo(QGraphicsItem * parent=0);
+    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    cuerpo();
+    cuerpo(double x, double y, double v, double a);
+    double getPosy();
+    double getPosx();
+    void actualizaposicion();
+    void actualizarvelocidad();
 
-    QRectF boundingRect() const; //dibujar un cuerpo
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget); //pintar el cuerpo
-
-
-public slots:
-    void move();
 };
 
 #endif // CUERPO_H

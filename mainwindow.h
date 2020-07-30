@@ -1,13 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-#include <QMainWindow>
-#include "cuerpo.h"
 #include <QGraphicsScene>
 #include <QTimer>
+#include "cuerpo.h"
+#include <QList>
 
-QT_BEGIN_NAMESPACE
+#include <QMainWindow>
+
 namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
+
 
 class MainWindow : public QMainWindow
 {
@@ -18,12 +19,18 @@ public:
     ~MainWindow();
 
 private slots:
-    void aparecer_bolas();
+    void on_simular_clicked();
+    void crear();
+    void mover();
 
 private:
     Ui::MainWindow *ui;
-
     QGraphicsScene *escena;
+    QTimer * timer;
+    QTimer * timermover;
+    cuerpo *pajaro;
+    QList<cuerpo*> pajaros;
+
 
 };
 #endif // MAINWINDOW_H

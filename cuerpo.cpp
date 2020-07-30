@@ -1,38 +1,53 @@
 #include "cuerpo.h"
-#include <QTimer>
-#include <stdlib.h>
-
-cuerpo::cuerpo(QGraphicsItem *parent): QObject(), QGraphicsPixmapItem()
-{
-    //set random posicion
-    int random_number = rand() % 700;
-    setPos(random_number,0);
-
-    //draw the bullet
-    setPixmap(QPixmap(":/images/enemy.png"));
-
-    //connect
-    QTimer * timer = new QTimer();
-    connect(timer,SIGNAL(timeout()),this, SLOT(move()));
-
-    timer->start(50);
-}
 
 QRectF cuerpo::boundingRect() const
 {
-    return QRectF(-radio/2,-radio/2,2*radio,2*radio); //retornar un rectangulo
+    return QRectF(-r,-r,2*r,2*r);
 }
 
 void cuerpo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    painter->drawEllipse(boundingRect()); //dibujar un rectangulo
+    painter->setBrush(Qt::red);
+    painter->drawEllipse(boundingRect());
 }
 
-void cuerpo::move()
+cuerpo::cuerpo()
 {
-    setPos(x(),y()+5);
-    if(pos().y() > 500)
-    {
-        delete this;
-    }
+
+}
+
+double cuerpo::getPosy()
+{
+    return posy;
+}
+
+double cuerpo::getPosx()
+{
+    return posx;
+}
+
+void cuerpo::actualizaposicion()
+{
+    posx=posx+velx*delta;
+    posy=posy+vely*delta-(0.5*g*delta*delta);
+    setPos(posx,-posy);
+}
+
+void cuerpo::actualizarvelocidad()
+{
+    velx=vel*cos(ang);
+    vely=vel*sin(ang)-g*delta;
+    ang=atan2(vely,velx);
+    vel=sqrt(velx*velx+vely*vely);
+}
+
+
+cuerpo::cuerpo(double x, double y, double v, double a)
+{
+    r=5;
+    posx = x;
+    posy =y;
+    vel=v;
+    ang=a;
+    setPos(posx,-posy);
 }

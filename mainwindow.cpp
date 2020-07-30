@@ -6,16 +6,17 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    escena = new QGraphicsScene; //crear la escena del juego
-    ui->graphicsView->setScene(escena); //agregar el graphicsView
-    escena->setSceneRect(0,0,1000,698); //darle un tamaño a la escena
 
-    cuerpo * bola = new cuerpo();
-    escena->addItem(bola);
+    escena = new QGraphicsScene;
+    timer = new QTimer;
+    timermover = new QTimer;
 
-    QTimer * timer = new QTimer();
-    connect(timer,SIGNAL(timeout()),this,SLOT(aparecer_bolas()));
-    timer->start(2000);
+    ui->graphicsView->setScene(escena);
+    escena->setSceneRect(0,-398,390,390);
+    escena->addRect(escena->sceneRect());
+    connect(timer,SIGNAL(timeout()),this,SLOT(crear()));
+    connect(timer,SIGNAL(timeout()),this,SLOT(crear()));
+
 }
 
 MainWindow::~MainWindow()
@@ -23,9 +24,30 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::aparecer_bolas()
+
+void MainWindow::on_simular_clicked()
 {
-    cuerpo * bola = new cuerpo();
-    escena->addItem(bola);
+    timer->start(20);
 }
 
+void MainWindow::crear()
+{
+    int x = rand() % 1000;
+    double y,v,a;
+    y=500;
+    v=20;
+    a=0;
+    double rad=(a/180)*3.1416;
+    //pajaro = new cuerpo(x,y,v,rad);
+    pajaros.push_back(new cuerpo(x,y,v,rad));
+    escena->addItem(pajaros.back());
+}
+
+void MainWindow::mover()
+{
+    for(QList<cuerpo*>::iterator it= pajaros.begin(); it!=pajaros.end();it++)
+    {
+        (*it)->actualizarvelocidad();
+        (*it)->actualizaposicion();
+    }
+}
