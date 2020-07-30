@@ -49,6 +49,14 @@ void MainWindow::mover()
 {
     for(QList<cuerpo*>::iterator it= pajaros.begin(); it!=pajaros.end();it++)
     {
+
+        for(QList<rectangulo*>::iterator ite= rectangulos.begin(); ite!=rectangulos.end();ite++)
+        {
+            if((*it)->collidesWithItem((*ite)))
+            {
+                (*it)->rebote();
+            }
+        }
         if((*it)->getPosy()<-600)
         {
             (*it)->hide();
@@ -69,7 +77,7 @@ void MainWindow::mover()
 void MainWindow::crear_rectangulo()
 {
     int x = rand() % 600;
-    int y =rand() % 300;
+    int y =rand() % 30;
     rectangulos.push_back(new rectangulo(x,y));
     escena->addItem(rectangulos.back());
 }

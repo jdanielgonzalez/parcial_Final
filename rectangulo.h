@@ -6,7 +6,7 @@
 
 class rectangulo: public QGraphicsItem
 {
-    double posy,posx,largo=100,ancho=50;
+    double posy,posx,largo=50,ancho=10;
 
 public:
     rectangulo();
